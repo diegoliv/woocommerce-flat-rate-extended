@@ -17,20 +17,20 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 		// $this->enabled            = "yes"; // This can be added as an setting but for this example its forced enabled
 		$this->title              = __( 'Flat Rate (Extended)', $this->slug );; // This can be added as an setting but for this example its forced.
 
+		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ), 0 );
 		add_action( 'woocommerce_update_options_shipping_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_update_options_shipping_' . $this->id, array( $this, 'process_flat_rates' ) );
 		add_filter( 'woocommerce_settings_api_sanitized_fields_' . $this->id, array( $this, 'save_default_costs' ) );
 
 		$this->init();
 
+	}
 
-		add_action( 'woocommerce_update_options_shipping_' . $this->id, array( $this, 'process_admin_options' ) );
-		add_action( 'woocommerce_update_options_shipping_' . $this->id, array( $this, 'process_flat_rates' ) );
-		add_filter( 'woocommerce_settings_api_sanitized_fields_' . $this->id, array( $this, 'save_default_costs' ) );
-
-		$this->init();
-
-
+	/**
+	 * Load textdomain.
+	 */
+	function load_textdomain(){
+		load_plugin_textdomain( $this->slug, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
@@ -53,6 +53,7 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 		$this->tax_status	  = $this->get_option( 'tax_status' );
 		$this->cost 		  = $this->get_option( 'cost' );
 		$this->cost_per_order = $this->get_option( 'cost_per_order' );
+		$this->min_order_cost = $this->get_option( 'minimum_order_cost' );
 		$this->fee 			  = $this->get_option( 'fee' );
 		$this->minimum_fee 	  = $this->get_option( 'minimum_fee' );
 		$this->options 		  = (array) explode( "\n", $this->get_option( 'options' ) );
@@ -122,6 +123,14 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 							'default'		=> '',
 							'desc_tip'		=> true
 						),
+			'minimum_order_cost' => array(
+							'title' 		=> __( 'Minimum cost per order', $this->plugin ),
+							'type' 			=> 'price',
+							'placeholder'	=> wc_format_localized_price( 0 ),
+							'description'	=> __( 'Enter a minimum cost (excluding tax) per order, e.g. 5.00. Default is 0.', $this->plugin_slug ),
+							'default'		=> '',
+							'desc_tip'		=> true
+						),
 			'options' => array(
 							'title' 		=> __( 'Additional Rates', 'woocommerce' ),
 							'type' 			=> 'textarea',
@@ -170,8 +179,6 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 	 */
 	function calculate_shipping( $package = array() ) {
 
-		print_r($package);
-
 		$this->rates 		= array();
 		$cost_per_order 	= ( isset( $this->cost_per_order ) && ! empty( $this->cost_per_order ) ) ? $this->cost_per_order : 0;
 
@@ -203,8 +210,6 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 
 			$costs = $this->item_shipping( $package );
 
-			print_r( $costs );
-
 			if ( ! is_null( $costs ) || $cost_per_order > 0 ) {
 
 				if ( ! is_array( $costs ) ) {
@@ -213,11 +218,18 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 
 				$costs['order'] = $cost_per_order;
 
+				if( $this->min_order_cost > array_sum( $costs ) ){
+					$costs = $this->min_order_cost;
+					$calc_tax = 'per_order';
+				} else {
+					$calc_tax = 'per_item';
+				}
+
 				$rate = array(
 					'id' 		=> $this->id,
 					'label' 	=> $this->title,
 					'cost' 		=> $costs,
-					'calc_tax' 	=> 'per_item',
+					'calc_tax' 	=> $calc_tax,
 				);
 
 			}
@@ -348,9 +360,8 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 	 * @return float
 	 */
 	function order_shipping( $package ) {
-		$cost 			= null;
-		$cost_extra 	= null;
-		$fee 			= null;
+		$cost 	= null;
+		$fee 	= null;
 
 		if ( sizeof( $this->flat_rates ) > 0 ) {
 
@@ -360,16 +371,14 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 			foreach ( $found_shipping_classes as $shipping_class => $products ) {
 				if ( isset( $this->flat_rates[ $shipping_class ] ) ) {
 					if ( $this->flat_rates[ $shipping_class ]['cost'] > $cost ) {
-						$cost 			= $this->flat_rates[ $shipping_class ]['cost'];
-						$cost_extra 	= $this->flat_rates[ $shipping_class ]['cost_extra'];
-						$fee			= $this->flat_rates[ $shipping_class ]['fee'];
+						$cost 	= $this->flat_rates[ $shipping_class ]['cost'];
+						$fee	= $this->flat_rates[ $shipping_class ]['fee'];
 					}
 				} else {
 					// No matching classes so use defaults
 					if ( ! empty( $this->cost ) && $this->cost > $cost ) {
-						$cost 			= $this->cost;
-						$cost_extra 	= $this->cost_extra;
-						$fee			= $this->fee;
+						$cost 	= $this->cost;
+						$fee	= $this->fee;
 					}
 				}
 			}
@@ -378,14 +387,12 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 
 		// Default rates if set
 		if ( is_null( $cost ) && $this->cost !== '' ) {
-			$cost 			= $this->cost;
-			$cost_extra 	= $this->cost_extra;
+			$cost 	= $this->cost;
 			$fee 	= $this->fee;
 		} elseif ( is_null( $cost ) ) {
 			// Set rates to 0 if nothing is set by the user
-			$cost 			= 0;
-			$cost_extra 	= 0;
-			$fee 			= 0;
+			$cost 	= 0;
+			$fee 	= 0;
 		}
 
 		// Shipping for whole order
@@ -426,15 +433,13 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 			// For each found class, add up the costs and fees
 			foreach ( $found_shipping_classes_values as $shipping_class => $class_price ) {
 				if ( isset( $this->flat_rates[ $shipping_class ] ) ) {
-					$cost 			+= $this->flat_rates[ $shipping_class ]['cost'];
-					$cost_extra 	+= $this->flat_rates[ $shipping_class ]['cost_extra'];
-					$fee			+= $this->get_fee( $this->flat_rates[ $shipping_class ]['fee'], $class_price );
+					$cost 	+= $this->flat_rates[ $shipping_class ]['cost'];
+					$fee	+= $this->get_fee( $this->flat_rates[ $shipping_class ]['fee'], $class_price );
 					$matched = true;
 				} elseif ( $this->cost !== '' ) {
 					// Class not set so we use default rate if its set
-					$cost 			+= $this->cost;
-					$cost_extra 	+= $this->cost_extra;
-					$fee			+= $this->get_fee( $this->fee, $class_price );
+					$cost 	+= $this->cost;
+					$fee	+= $this->get_fee( $this->fee, $class_price );
 					$matched = true;
 				}
 			}
@@ -464,6 +469,7 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 		$costs = array();
 		$total_products = count( $package['contents'] ); //get the total amount of products
 		$first_item = current( array_keys( $package['contents'] ) ); // get key of first item
+		$current_total = 0; 
 
 		$matched = false;
 
@@ -490,22 +496,39 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 					$matched = true;
 				}
 
-				echo 'cost: ' . $cost . ', cost_extra: '. $cost_extra;
-
 				// Checks if there is more than one type of product 
 				if( $total_products > 1 ){
 
 					// check if quantity is greater than one
 					if( $values['quantity'] > 1 ){
 
-						$costs[ $item_id ] = ( $cost + $fee ) + ( ( $cost_extra + $fee ) * ( $values['quantity'] -1 ) );
+						$i =1;
+
+						while( $i <= $values['quantity'] ){
+
+							if ($this->min_order_cost > $current_total ){
+
+								$costs[ $item_id ] = ( $costs[ $item_id ] + ( $cost + $fee ) );
+								$current_total = ( $current_total + $costs[ $item_id ] );
+							
+							} else {
+
+								$costs[ $item_id ] = ( $costs[ $item_id ] + ( $cost_extra + $fee ) );
+
+							}
+
+							$i++;
+
+						}
 
 					} else {
 
-						// check if it's the first item of the cart
-						if( $item_id === $first_item ){
+						if ( $this->min_order_cost > $current_total ){
+
 							// if true, use the normal cost
 							$costs[ $item_id ] = ( ( $cost + $fee ) * $values['quantity'] );
+							$current_total = $current_total + $costs[ $item_id ];
+
 						} else {
 							// if false, use the cost per extra item
 							$costs[ $item_id ] = ( ( $cost_extra + $fee ) * $values['quantity'] );
@@ -575,9 +598,6 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 	function generate_additional_costs_table_html() {
 		ob_start();
 		?>
-		<pre>
-		<?php print_r( $this->flat_rates ) ?>
-		</pre>
 
 		<tr valign="top">
 			<th scope="row" class="titledesc"><?php _e( 'Costs', 'woocommerce' ); ?>:</th>
