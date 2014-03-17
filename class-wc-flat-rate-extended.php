@@ -17,7 +17,6 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 		// $this->enabled            = "yes"; // This can be added as an setting but for this example its forced enabled
 		$this->title              = __( 'Flat Rate (Extended)', $this->slug );; // This can be added as an setting but for this example its forced.
 
-		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ), 0 );
 		add_action( 'woocommerce_update_options_shipping_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_update_options_shipping_' . $this->id, array( $this, 'process_flat_rates' ) );
 		add_filter( 'woocommerce_settings_api_sanitized_fields_' . $this->id, array( $this, 'save_default_costs' ) );
@@ -26,12 +25,6 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 
 	}
 
-	/**
-	 * Load textdomain.
-	 */
-	function load_textdomain(){
-		load_plugin_textdomain( $this->slug, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-	}
 
 	/**
 	 * init function.
@@ -608,7 +601,7 @@ class WC_Flat_Rate_Extended extends WC_Shipping_Method {
 							<th class="check-column"><input type="checkbox"></th>
 							<th class="shipping_class"><?php _e( 'Shipping Class', 'woocommerce' ); ?></th>
 							<th><?php _e( 'Cost', 'woocommerce' ); ?> <a class="tips" data-tip="<?php _e( 'Cost, excluding tax.', 'woocommerce' ); ?>">[?]</a></th>
-							<th><?php _e( 'Cost (per extra item)', $this->plugin_slug ); ?> <a class="tips" data-tip="<?php _e( 'Cost, excluding tax.', 'woocommerce' ); ?>">[?]</a></th>
+							<th><?php _e( 'Cost (per extra item)', $this->plugin_slug ); ?> <a class="tips" data-tip="<?php _e( 'Cost for extra items (when total cost is bigger than the minimum cost).', $this->plugin_slug ); ?>">[?]</a></th>
 							<th><?php _e( 'Handling Fee', 'woocommerce' ); ?> <a class="tips" data-tip="<?php _e( 'Fee excluding tax. Enter an amount, e.g. 2.50, or a percentage, e.g. 5%.', 'woocommerce' ); ?>">[?]</a></th>
 						</tr>
 					</thead>

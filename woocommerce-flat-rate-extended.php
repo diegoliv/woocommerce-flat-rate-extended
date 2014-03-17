@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name:       WooCommerce Flat Rate Extended
  * Plugin URI:        https://github.com/diegoliv/woocommerce-flat-rate-extended
- * Description:       Adds a new shipping method base on the Flat Rate that allows an alternative fixed price for extra items from a shipping class. 
+ * Description:       Adds a shipping method based on the Flat Rate that allows an alternative fixed price for extra items from a shipping class. 
  * Version:           1.0.0
  * Author:            Diego de Oliveira
  * Author URI:        http://github.com/diegoliv
@@ -48,3 +48,11 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
  
 	add_filter( 'woocommerce_shipping_methods', 'add_wc_fr_ext_method' );
 }
+
+/**
+ * Load textdomain.
+ */
+function wc_fr_ext_load_textdomain(){
+	load_plugin_textdomain( 'woocommerce-flat-rate-extended', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+}
+add_action( 'init', 'wc_fr_ext_load_textdomain', 0 );

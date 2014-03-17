@@ -1,0 +1,279 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Flat Rate Extended v1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2014-03-17 21:41:33+0000\n"
+"Last-Translator: admin <contato@favolla.com.br>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: CSL v1.x\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: BRAZIL\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: class-wc-flat-rate-extended.php:13
+#: class-wc-flat-rate-extended.php:18
+#@ woocommerce-flat-rate-extended
+msgid "Flat Rate (Extended)"
+msgstr "Taxa Fixa (Extendida)"
+
+#: class-wc-flat-rate-extended.php:14
+#@ woocommerce-flat-rate-extended
+msgid "Fixed Rates, plus alternative rates for each shipping class."
+msgstr "Taxas fixas, mais taxas alternativas para cada classe de entrega."
+
+#: class-wc-flat-rate-extended.php:69
+#@ woocommerce
+msgid "Enable/Disable"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:71
+#@ woocommerce
+msgid "Enable this shipping method"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:75
+#@ woocommerce
+msgid "Method Title"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:77
+#@ woocommerce
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:78
+#@ woocommerce
+msgid "Flat Rate"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:82
+#@ woocommerce
+msgid "Availability"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:87
+#@ woocommerce
+msgid "All allowed countries"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:88
+#: class-wc-flat-rate-extended.php:92
+#@ woocommerce
+msgid "Specific Countries"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:99
+#@ woocommerce
+msgid "Select some countries"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:103
+#@ woocommerce
+msgid "Tax Status"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:107
+#@ woocommerce
+msgid "Taxable"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:108
+#@ woocommerce
+msgctxt "Tax status"
+msgid "None"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:112
+#@ woocommerce
+msgid "Cost per order"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:115
+#@ woocommerce
+msgid "Enter a cost (excluding tax) per order, e.g. 5.00. Default is 0."
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:120
+#@ woocommerce-flat-rate-extended
+msgid "Minimum cost per order"
+msgstr "Valor mínimo por pedido"
+
+#: class-wc-flat-rate-extended.php:123
+#@ woocommerce-flat-rate-extended
+msgid "Enter a minimum cost (excluding tax) per order, e.g. 5.00. Default is 0."
+msgstr "Insira um valor mínimo (excluindo taxas) por pedido, por exemplo: 5.00. Padrão é 0."
+
+#: class-wc-flat-rate-extended.php:128
+#@ woocommerce
+msgid "Additional Rates"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:130
+#@ woocommerce
+msgid "Optional extra shipping options with additional costs (one per line): Option Name | Additional Cost [+- Percents] | Per Cost Type (order, class, or item) Example: <code>Priority Mail | 6.95 [+ 0.2%] | order</code>."
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:133
+#@ woocommerce
+msgid "Option Name | Additional Cost [+- Percents%] | Per Cost Type (order, class, or item)"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:136
+#@ woocommerce
+msgid "Additional Costs"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:138
+#@ woocommerce
+msgid "Additional costs can be added below - these will all be added to the per-order cost above."
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:141
+#@ woocommerce
+msgid "Costs Added..."
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:145
+#@ woocommerce
+msgid "Per Order - charge shipping for the entire order as a whole"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:146
+#@ woocommerce
+msgid "Per Item - charge shipping for each item individually"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:147
+#@ woocommerce
+msgid "Per Class - charge shipping for each shipping class in an order"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:154
+#@ woocommerce
+msgid "Minimum Handling Fee"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:157
+#@ woocommerce
+msgid "Enter a minimum fee amount. Fee's less than this will be increased. Leave blank to disable."
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:596
+#@ woocommerce
+msgid "Costs"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:602
+#@ woocommerce
+msgid "Shipping Class"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:603
+#@ woocommerce
+msgid "Cost"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:603
+#@ woocommerce
+msgid "Cost, excluding tax."
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:604
+#@ woocommerce-flat-rate-extended
+msgid "Cost (per extra item)"
+msgstr "Custo (por item extra)"
+
+#: class-wc-flat-rate-extended.php:605
+#@ woocommerce
+msgid "Handling Fee"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:605
+#@ woocommerce
+msgid "Fee excluding tax. Enter an amount, e.g. 2.50, or a percentage, e.g. 5%."
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:610
+#@ woocommerce
+msgid "+ Add Cost"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:610
+#@ woocommerce
+msgid "Delete selected costs"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:616
+#@ woocommerce
+msgid "Any class"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:617
+#: class-wc-flat-rate-extended.php:618
+#: class-wc-flat-rate-extended.php:619
+#@ woocommerce
+msgid "N/A"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:637
+#: class-wc-flat-rate-extended.php:668
+#@ woocommerce
+msgid "Select a class&hellip;"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:683
+#@ woocommerce
+msgid "Delete the selected rates?"
+msgstr ""
+
+#. translators: plugin header field 'Name'
+#: woocommerce-flat-rate-extended.php:0
+#@ woocommerce-flat-rate-extended
+msgid "WooCommerce Flat Rate Extended"
+msgstr ""
+
+#. translators: plugin header field 'PluginURI'
+#: woocommerce-flat-rate-extended.php:0
+#@ woocommerce-flat-rate-extended
+msgid "https://github.com/diegoliv/woocommerce-flat-rate-extended"
+msgstr ""
+
+#. translators: plugin header field 'Description'
+#: woocommerce-flat-rate-extended.php:0
+#@ woocommerce-flat-rate-extended
+msgid "Adds a shipping method based on the Flat Rate that allows an alternative fixed price for extra items from a shipping class."
+msgstr "Adiciona um método de entrega baseado na Taxa Fixa que permite um valor fixo alternativo para itens extras de uma classe de entrega."
+
+#. translators: plugin header field 'Author'
+#: woocommerce-flat-rate-extended.php:0
+#@ woocommerce-flat-rate-extended
+msgid "Diego de Oliveira"
+msgstr ""
+
+#. translators: plugin header field 'AuthorURI'
+#: woocommerce-flat-rate-extended.php:0
+#@ woocommerce-flat-rate-extended
+msgid "http://github.com/diegoliv"
+msgstr ""
+
+#. translators: plugin header field 'Version'
+#: woocommerce-flat-rate-extended.php:0
+#@ woocommerce-flat-rate-extended
+msgid "1.0.0"
+msgstr ""
+
+#: class-wc-flat-rate-extended.php:604
+#@ woocommerce-flat-rate-extended
+msgid "Cost for extra items (when total cost is bigger than the minimum cost)."
+msgstr "Custo por item extra (quando o custo total for maior que o custo mínimo)."
+
